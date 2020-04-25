@@ -1,0 +1,5 @@
+[c/008000:Who whats to be a Creeper?]
+Mod changes hit and death sound effect when player is killed with Creeper set.
+In addition adds a capability to do Creeper's iconic suicidal attack.
+
+Mod contains sound effects from game Minecraft made by Mojang
