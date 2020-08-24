@@ -44,9 +44,18 @@ namespace CreeperSound
 		public bool explodeTile = false;
 		public bool  explodeFuse = false;
 		
+		private bool IsCreeper ()
+		{
+			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) 
+				&& (player.armor[11].type == 1747 || player.armor[1].type == 1747 || player.armor[1].type == ItemType<Items.CreeperBody>() || player.armor[11].type == ItemType<Items.CreeperBody>()) 
+				&& (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			return true;
+			return false;
+		}
+		
 		public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
-			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) && (player.armor[11].type == 1747 || player.armor[1].type == 1747) && (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			if (IsCreeper())
 			{
 				playSound = false;
 				Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Death"), player.position);
@@ -56,7 +65,7 @@ namespace CreeperSound
 
 		public override bool PreHurt (bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
 		{
-			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) && (player.armor[11].type == 1747 || player.armor[1].type == 1747) && (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			if (IsCreeper())
 			{
 				playSound = false;
 				switch (Main.rand.Next(4))
@@ -74,29 +83,37 @@ namespace CreeperSound
 		{
 			if (explodeFuse)
 			{
-				Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Fuse"));
+				//Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/Fuse"), player.position);  //Don't work online and I don't know why (PreUpdate don't sync sounds?)
+				Projectile.NewProjectile(player.position,new Vector2(0,0), ProjectileType<Projectiles.Fuse>(), 0, 0, player.whoAmI, 0, 1); 
 				explodeFuse = false;
 			}				
-			if (explodeCountdown >= 0) --explodeCountdown;
-			if (explodeCountdown == 0) 
+			if (explodeCountdown > 0) --explodeCountdown;
+			if (explodeCountdown == 0 && !player.dead) 
 			{
-				player.statLife = 1;
 				if (explodeTile) Projectile.NewProjectile(player.position,new Vector2(0,0), ProjectileType<Projectiles.Creeper>(), 250, 5, player.whoAmI, 0, 1); 
 				if(!explodeTile) Projectile.NewProjectile(player.position,new Vector2(0,0), ProjectileType<Projectiles.CreeperNoTile>(), 250, 5, player.whoAmI, 0, 1); 
+				player.statLife = 1;
+				explodeTile = false;
+				explodeCountdown = -1;
 			}
 		}
 		
 		public void Taunt() 
 		{
-			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) && (player.armor[11].type == 1747 || player.armor[1].type == 1747) && (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			if (IsCreeper())
 			{
+				if (explodeCountdown > 0)
+				{
+					explodeCountdown = -1;
+				}
+				else
 				explodeFuse = true;
 			}
 		}
 		
 		public void Explode() 
 		{
-			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) && (player.armor[11].type == 1747 || player.armor[1].type == 1747) && (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			if (IsCreeper())
 			{
 				explodeCountdown = 120;
 				explodeTile = true;
@@ -106,7 +123,7 @@ namespace CreeperSound
 		
 		public void ExplodeNoTile() 
 		{
-			if ((player.armor[10].type == 1746 || player.armor[0].type == 1746) && (player.armor[11].type == 1747 || player.armor[1].type == 1747) && (player.armor[12].type == 1748 || player.armor[2].type == 1748))
+			if (IsCreeper())
 			{
 				explodeCountdown = 120;
 				explodeTile = false;

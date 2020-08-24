@@ -30,11 +30,6 @@ namespace CreeperSound.Projectiles
 		
 		public override void AI()
 		{
-			if (projectile.owner == Main.myPlayer && Main.player[projectile.owner].dead && projectile.timeLeft > 3)
-			{
-				projectile.timeLeft = 3;
-			}
-			
 			if (projectile.owner == Main.myPlayer && projectile.timeLeft <= 3)
 			{
 				projectile.tileCollide = false;

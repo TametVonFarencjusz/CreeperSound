@@ -3,3 +3,23 @@ Mod changes hit and death sound effect when player is killed with Creeper set.
 In addition adds a capability to do Creeper's iconic suicidal attack.
 
 Mod contains sound effects from game Minecraft made by Mojang
+
+I want to thank [c/bf4040:GameRaider101] for showing this mod in his video!
+
+1.0.6
+Added translations for Creeper Vest
+
+1.0.5
+Pressing "Taunt Key" after "Explode Key" will cancel the explosion
+
+1.0.4
+Fixed - Players will not explode after dying
+
+1.0.3
+Added "Creeper Vest" and crafting for Creeper Set (1 Grenade, 1 Bomb, 1 Dynamite)
+
+1.0.2
+Fixed - Fuse sound was not heard by other players 
+
+1.0.1
+Added Mod Icon and Homepage
